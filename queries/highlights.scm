@@ -47,8 +47,7 @@
 (gnu_asm_qualifier "goto" @keyword)
 
 "typedef" @declaration
-(declaration (type_specifier ["enum" "struct" "union"] @declaration))
-(type_definition (type_specifier ["enum" "struct" "union"] @declaration))
+(type_specifier ["enum" "struct" "union"] @declaration body: _)
 (labeled_statement ":" @declaration)
 
 (storage_class_specifier) @declaration_modifier
@@ -81,20 +80,19 @@
 ; HACK: Matches only up to T(*param)[…][…][…], T**(*param)(…) and T*****param
 ;       but higher levels of nesting are extremely rare (i.e. not found in
 ;       Linux's source code), so that's okay.
-(function_definition
- (function_declarator
-  (parameter_list
-   (parameter_declaration
-    [(identifier) @function_parameter
-     (_ declarator:
-      [(identifier) @function_parameter
-       (_ declarator:
-        [(identifier) @function_parameter
-         (_ declarator:
-          [(identifier) @function_parameter
-           (_ declarator:
-            [(identifier) @function_parameter
-             (_ declarator: (identifier) @function_parameter)])])])])]))))
+(function_declarator
+ (parameter_list
+  (parameter_declaration
+   [(identifier) @function_parameter
+    (_ declarator:
+     [(identifier) @function_parameter
+      (_ declarator:
+       [(identifier) @function_parameter
+        (_ declarator:
+         [(identifier) @function_parameter
+          (_ declarator:
+           [(identifier) @function_parameter
+            (_ declarator: (identifier) @function_parameter)])])])])])))
 (preproc_params (identifier) @function_parameter)
 (variadic_parameter "..." @special_function_parameter)
 (preproc_params "..." @special_function_parameter)
